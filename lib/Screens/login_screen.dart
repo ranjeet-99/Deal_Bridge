@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'employee_signup_screen.dart';
 
 class LoginScreen extends StatefulWidget{
 
@@ -270,9 +271,9 @@ class _LoginScreenState extends State<LoginScreen>{
 
                   }
 
-                  if(value.length < 6 ){
+                  if(value.length < 8 ){
 
-                    return "Password must be atleast 6 Characters";
+                    return "Password must be atleast 8 Characters";
 
                   }
 
@@ -378,6 +379,47 @@ class _LoginScreenState extends State<LoginScreen>{
                 ),
 
               ),
+
+              Row(
+
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children:[
+
+                  const Text(
+
+                    "New Employee?"
+
+                  ),
+
+                  TextButton(
+
+                    onPressed:(){
+
+                      Navigator.push(context,
+
+                      MaterialPageRoute(
+
+                        builder: (context) => const EmployeeSignupScreen(),
+
+                      ),
+
+                      );
+
+                    },
+
+                    child: const Text(
+
+                      "Create Account",
+
+                    ),
+
+                  ),
+
+                ],
+
+              ),
+
 
             ],
 
