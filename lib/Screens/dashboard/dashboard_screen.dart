@@ -1,9 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '/Screens/home_screen.dart';
-import '/Screens/clients_screen.dart';
-import '/Screens/proposals_screen.dart';
-import '/Screens/profile_screen.dart';
 
 class EmployeeDashboardScreen extends StatefulWidget{
 
@@ -15,17 +11,6 @@ class EmployeeDashboardScreen extends StatefulWidget{
 }
 
 class _EmployeeDeshboardScreenState extends State<EmployeeDashboardScreen>{
-
-  int currentIndex = 0;
-
-  final List<Widget> screens = [
-
-    const HomeScreen(),
-    const ClientsScreen(),
-    const ProposalScreen(),
-    const ProfileScreen(),
-
-  ];
 
   @override
 
@@ -961,90 +946,6 @@ class _EmployeeDeshboardScreenState extends State<EmployeeDashboardScreen>{
             ),
 
         ),
-
-      ),
-
-      bottomNavigationBar: BottomNavigationBar(
-
-        backgroundColor: Colors.white,
-
-        selectedItemColor: Colors.blue,
-
-        unselectedItemColor: Colors.grey,
-
-        type: BottomNavigationBarType.fixed,
-
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        iconSize: 24,
-        elevation:8,
-        selectedFontSize: 18,
-        unselectedFontSize: 12,
-
-
-        currentIndex: currentIndex,
-
-        onTap: (index){
-
-          setState((){
-
-            currentIndex = index;
-
-          });
-
-        },
-
-        items:[
-
-          BottomNavigationBarItem(
-
-            icon: Icon(
-
-              Icons.home_outlined,
-
-            ),
-
-            label: "Home",
-
-          ),
-
-          BottomNavigationBarItem(
-
-            icon: Icon(
-
-              Icons.groups_outlined,
-
-            ),
-
-            label: "Clients",
-
-          ),
-
-          BottomNavigationBarItem(
-
-            icon: Icon(
-
-              Icons.description_outlined,
-
-            ),
-
-            label: "Proposals",
-
-          ),
-
-          BottomNavigationBarItem(
-
-            icon: Icon(
-
-              Icons.person_outline,
-
-            ),
-
-            label: "Profile",
-
-          ),
-
-        ],
 
       ),
 
