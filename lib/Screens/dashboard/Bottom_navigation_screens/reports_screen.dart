@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/models/report_model.dart';
 
 class ReportsScreen extends StatefulWidget{
 
@@ -12,10 +13,37 @@ class ReportsScreen extends StatefulWidget{
 
 class _ReportsScreenState extends State<ReportsScreen>{
 
-  String totalRevenue = "900054";
+  String totalRevenue = "985054";
   int dealsClosed = 19;
   int proposalssent = 42;
   String ConversionRate = "45%";
+
+  List<ReportClient> topclient = [
+
+    ReportClient(
+    Name: "Verma Electronics",
+    revenue: 185000,
+    ),
+
+  ];
+
+  List<FollowUp> followups = [
+
+    FollowUp(
+
+      ClientName: "Nikhil Traders",
+      DueDate: "Tomorrow",
+
+    ),
+
+    FollowUp(
+
+      ClientName: "Raj Agro foods",
+      DueDate: "3rd August",
+
+    ),
+
+  ];
 
   @override
 
@@ -25,7 +53,7 @@ class _ReportsScreenState extends State<ReportsScreen>{
 
      return Container(
 
-       width: 18,
+       width: 110,
        height: height,
 
        decoration: BoxDecoration(
@@ -70,7 +98,7 @@ class _ReportsScreenState extends State<ReportsScreen>{
         Container(
 
           width: double.infinity,
-          height: 180,
+          height: 300,
 
         decoration: BoxDecoration(
 
@@ -104,12 +132,12 @@ class _ReportsScreenState extends State<ReportsScreen>{
 
            Text(
 
-             "TotalRevenue ",
+             "TotalRevenue - This Month ",
              style: TextStyle(
 
                color: Colors.white70,
                fontWeight: FontWeight.w500,
-               fontSize: 16,
+               fontSize: 19,
 
              ),
 
@@ -123,22 +151,8 @@ class _ReportsScreenState extends State<ReportsScreen>{
              style: TextStyle(
 
                fontWeight: FontWeight.bold,
-               fontSize: 16,
+               fontSize: 35,
                color: Colors.white,
-
-             ),
-
-           ),
-
-           SizedBox(height: 6),
-
-           Text(
-
-             "This Month",
-             style: TextStyle(
-
-               color: Colors.white70,
-               fontSize: 14,
 
              ),
 
@@ -155,9 +169,22 @@ class _ReportsScreenState extends State<ReportsScreen>{
 
                _buildBar(50),
                _buildBar(80),
-               _buildBar(35),
-               _buildBar(100),
-               _buildBar(65),
+               _buildBar(80),
+               _buildBar(50),
+
+               Container(
+
+                 width: 110,
+                 height: 130,
+
+                 decoration: BoxDecoration(
+
+                   color: Colors.white,
+                   borderRadius: BorderRadius.circular(10),
+
+                 ),
+
+               ),
 
              ],
 
@@ -237,6 +264,9 @@ class _ReportsScreenState extends State<ReportsScreen>{
 
                  ),
 
+               ],
+             ),
+
                const SizedBox(height: 16),
 
                  Divider(),
@@ -273,6 +303,9 @@ class _ReportsScreenState extends State<ReportsScreen>{
 
                   ),
 
+                  ],
+               ),
+
                   SizedBox(height: 16),
 
                   Divider(),
@@ -281,7 +314,7 @@ class _ReportsScreenState extends State<ReportsScreen>{
 
                 Row(
 
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                   children:[
 
@@ -304,29 +337,6 @@ class _ReportsScreenState extends State<ReportsScreen>{
 
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green,
-
-                      ),
-
-                    ),
-
-                    SizedBox(height:20),
-
-                    Align(
-
-                      alignment: Alignment.centerRight,
-
-                      child: TextButton(
-
-                        onPressed:(){
-
-                        },
-
-                       child: Text(
-
-                        "View Details"
-
-                      ),
 
                       ),
 
@@ -336,19 +346,199 @@ class _ReportsScreenState extends State<ReportsScreen>{
 
                 ),
 
-                ],
-
-               ),
-
-               ],
-
-             ),
+             SizedBox(height:20),
 
            ],
 
          ),
 
        ),
+
+          Container(
+
+            width: double.infinity,
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+
+            ),
+
+            child: Column(
+
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children:[
+
+                Text(
+                  "Top Clients ",
+                  style: TextStyle(
+
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+
+                  ),
+
+                ),
+
+                const SizedBox(height: 16),
+
+               ...topclient.map(
+
+                 (client) => Column(
+
+                   children:[
+
+                      Padding(
+
+                 padding: const EdgeInsets.symmetric(vertical: 16),
+
+             child:   Row(
+
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                 children:[
+
+                   Text(
+
+                     topclient[0].Name,
+                     style: TextStyle(
+
+                       fontSize: 16,
+                       color: Colors.grey,
+
+                     ),
+
+
+                   ),
+
+                   Text(
+
+                     "${topclient[0].revenue.toStringAsFixed(0)}",
+                     style: TextStyle(
+
+                       fontSize: 16,
+                       fontWeight: FontWeight.bold,
+
+                     ),
+
+                   ),
+
+                 ],
+
+               ),
+                 ),
+
+               const Divider(),
+
+     ],
+
+               ),
+
+               ),
+
+              ],
+
+            ),
+
+
+          ),
+
+          const SizedBox(height:20),
+
+          Container(
+
+            width: double.infinity,
+            padding: const EdgeInsets.all(18),
+
+            decoration: BoxDecoration(
+
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+
+            ),
+
+            child: Column(
+
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children:[
+
+                Text(
+
+                  "Follow-Ups Due",
+                  style: TextStyle(
+
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+
+                  ),
+
+                ),
+
+                const SizedBox(height: 16),
+
+              ...followups.map(
+
+                  (FollowUp) => Column(
+
+                   children:[
+
+                     Padding(
+
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+
+                  child: Row(
+
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                    children:[
+
+                      Text(
+
+                        FollowUp.ClientName,
+                        style: TextStyle(
+
+                          fontSize: 16,
+                          color: Colors.grey,
+
+                        ),
+
+                      ),
+
+                    Text(
+
+                      FollowUp.DueDate,
+                      style: TextStyle(
+
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+
+                      ),
+
+
+                    ),
+
+                    ],
+
+                  ),
+
+                  ),
+
+                 const Divider(),
+
+               ],
+
+                  ),
+
+               ),
+
+              ],
+
+            ),
+
+          ),
 
         ],
 
