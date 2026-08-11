@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/Screens/client_registration_screen.dart';
 
 class ClientsScreen extends StatefulWidget{
 
@@ -231,6 +232,16 @@ class _ClientsScreenState extends State<ClientsScreen>{
 
         onPressed:(){
 
+          Navigator.push(
+
+            context,
+            MaterialPageRoute(
+
+              builder: (context) => const ClientRegistrationScreen(),
+
+            ),
+
+          );
 
         },
 

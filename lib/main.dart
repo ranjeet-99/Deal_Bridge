@@ -1,4 +1,5 @@
 
+import 'package:deal_bridge/Screens/client_registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'Screens/dashboard/dashboard_screen.dart';
 import 'screens/splash_screen.dart';
