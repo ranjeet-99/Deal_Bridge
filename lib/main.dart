@@ -5,6 +5,7 @@ import 'Screens/dashboard/dashboard_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
 import '/Screens/dashboard/Bottom_navigation_screens/main_screen.dart';
+import '/Screens/visit_screen.dart';
 
 void main(){
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
 
       title: "DealBridge",
-      home: MainScreen(),
+      home: VisitScreen(),
 
     );
 

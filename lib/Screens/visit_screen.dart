@@ -14,26 +14,26 @@ class _VisitScreenState extends State<VisitScreen>{
 
   final _formkey = GlobalKey<FormState>();
 
-  DateTime? selectedDate;
-  TimeOfDay? selectedTime;
-  String? selectedPurpose;
-  DateTime? followUpDate;
-  String? selectedStatus;
-
   final TextEditingController notesController = TextEditingController();
   final TextEditingController employeeController = TextEditingController();
+
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
+  DateTime? followUpDate;
+
+  String? selectedPurpose;
+  String? selectedStatus;
 
   Future<void> selectDate() async{
 
    final pickedDate = await showDatePicker(
 
-      context: context,
+     context: context,
+     firstDate: DateTime.now(),
+     lastDate: DateTime(2050),
+     initialDate: DateTime.now(),
 
-      firstDate: DateTime.now(),
-      lastDate: DateTime(20507 ),
-       initialDate: DateTime.now(),
-
-      );
+   );
 
    if(pickedDate != null){
 
@@ -41,35 +41,34 @@ class _VisitScreenState extends State<VisitScreen>{
 
        selectedDate = pickedDate;
 
-  });
-
-  }
-
-}
-
-Future<void> selectTime() async{
-
-    final pickedTime = await showTimePicker(
-
-      context: context,
-
-    initialTime: TimeOfDay.now(),
-
-    );
-
-   if(pickedTime != null){
-
-     setState((){
-
-       selectedTime = pickedTime;
-
      });
 
    }
 
-}
+  }
 
-Future<void> selectFollowUpDate() async{
+  Future<void> selectTime() async{
+
+    final pickedTime = await showTimePicker(
+
+      context: context,
+      initialTime: TimeOfDay.now(),
+
+    );
+
+    if(pickedTime != null){
+
+      setState((){
+
+        selectedTime = pickedTime;
+
+      });
+
+    }
+
+  }
+
+  Future<void> selectFollowUpDate() async{
 
     final pickedDate = await showDatePicker(
 
@@ -90,7 +89,7 @@ Future<void> selectFollowUpDate() async{
 
     }
 
-}
+  }
 
   @override
 
@@ -106,288 +105,485 @@ Future<void> selectFollowUpDate() async{
 
     return Scaffold(
 
-      body: SafeArea(
+      body:SafeArea(
 
-        child: SingleChildScrollView(
+        child: Form(
 
-          child: Padding(
+          key: _formkey,
 
-            padding: const EdgeInsets.all(20),
+        child:SingleChildScrollView(
 
-          child:Column(
+          padding: const EdgeInsets.all(20),
 
-            crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
 
-          children:[
+              crossAxisAlignment: CrossAxisAlignment.start,
 
-            Row(
+            children:[
 
-              children:[
+              Row(
 
-                Container(
+                children: [
 
-                  width:40,
-                  height:40,
+                  Container(
 
-                  decoration: BoxDecoration(
+                    width: 40,
+                    height: 40,
 
-                  shape: BoxShape.circle,
-                  border: Border.all(
+                    decoration: BoxDecoration(
 
-                    color: Colors.grey.shade300,
+                      shape: BoxShape.circle,
+
+                      border: Border.all(
+
+                        color: Colors.grey.shade300,
+
+                      ),
+
+                    ),
+
+                    child: IconButton(
+
+                      onPressed:(){
+
+                        Navigator.pop(context);
+
+                      },
+
+                      icon: const Icon(Icons.arrow_back),
+
+                    ),
 
                   ),
 
+                  const SizedBox(width: 12),
+
+                  const Text(
+
+                    "Log a Visit",
+                    style: TextStyle(
+
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+
+                    ),
+
                   ),
 
-                  child: IconButton(
+                ],
 
-                    onPressed:(){
+              ),
 
-                      Navigator.pop(context);
+              const SizedBox(height: 25),
 
-                    },
+              Row(
 
-                    icon: const Icon(Icons.arrow_back),
+                children:[
+
+                  Expanded(
+
+                    child: InkWell(
+
+                      onTap: selectDate,
+
+                      child: InputDecorator(
+
+                        decoration: InputDecoration(
+
+                        labelText: "DATE",
+                        suffixIcon: const Icon(Icons.keyboard_arrow_down),
+
+                         border: OutlineInputBorder(
+
+                           borderRadius: BorderRadius.circular(12),
+
+                         ),
+
+                        ),
+
+                        child: Text(
+
+                          selectedDate == null ? ""
+                                               : "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
+
+                        ),
+
+                      ),
+                    ),
 
                   ),
-
-                ),
 
                 const SizedBox(width: 12),
 
-                const Text(
+                Expanded(
 
-                  "Log a Visit",
-                  style: TextStyle(
+                  child: InkWell(
 
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                onTap: selectTime,
+
+                child: InputDecorator(
+
+                  decoration: InputDecoration(
+
+                    labelText: "TIME",
+                    suffixIcon: Icon(Icons.keyboard_arrow_down),
+
+                    border: OutlineInputBorder(
+
+                      borderRadius: BorderRadius.circular(12),
+
+                    ),
+
+                  ),
+
+                  child: Text (
+
+                    selectedTime == null ? ""
+                                         : selectedTime!.format(context),
+                  ),
+
+                ),
 
                   ),
 
                 ),
 
-              ],
+                ],
 
-            ),
+              ),
 
-          const SizedBox(height:25),
+              const SizedBox(height: 20),
+              
+              DropdownButtonFormField<String>(
+                
+                initialValue: selectedPurpose,
+                
+                decoration: InputDecoration(
+                  
+                  labelText: "PURPOSE",
+                  
+                  border: OutlineInputBorder(
+                    
+                    borderRadius: BorderRadius.circular(12),
+                    
+                  ),
+                  
+                ),
 
-         Row(
+                items: const [
 
-           children:[
+                  DropdownMenuItem(
 
-             Expanded(
+                    value:"Product Demo",
+                    child: Text("Product Demo"),
 
-               child: TextFormField(
+                  ),
 
-                 readOnly: true,
-                 controller: TextEditingController(
+                  DropdownMenuItem(
 
-                   text: selectedDate == null ? ""
-                                              :"${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
-                 ),
+                    value:"Follow Up",
+                    child: Text("Follow Up"),
+                  ),
 
-             decoration: InputDecoration(
+                  DropdownMenuItem(
 
-               labelText: "DATE",
-               suffixIcon: const Icon(Icons.keyboard_arrow_down_outlined),
-               border: OutlineInputBorder(
+                    value:"Business Meating",
+                    child: Text("Business Meeting"),
 
-               borderRadius: BorderRadius.circular(12),
+                  ),
+
+                  DropdownMenuItem(
+
+                    value: "Quotation Discussion",
+                    child: Text("Quotation Discussion"),
+
+                  ),
+
+                ],
+
+                validator: (value){
+
+                  if(value == null || value.trim().isEmpty){
+
+                    return "Please select Purpose";
+
+                  }
+
+                  return null;
+
+                },
+
+                onChanged: (value){
+
+                  setState((){
+
+                    selectedPurpose = value;
+
+                  });
+
+                }
+                
+              ),
+
+              const SizedBox(height: 20),
+
+              TextFormField(
+
+                controller: notesController,
+                maxLines: 4,
+
+                decoration: InputDecoration(
+
+                  labelText: "NOTES",
+                  hintText: "Discussed pricing and delivery timelines...",
+
+                  border: OutlineInputBorder(
+
+                    borderRadius: BorderRadius.circular(12),
+
+                  ),
+
+                ),
+
+              ),
+
+              const SizedBox(height: 20),
+
+              TextFormField(
+
+                controller: employeeController,
+
+                decoration: InputDecoration(
+
+                  labelText: "ASSIGNED EMPLOYEE",
+                  hintText: "enter employee name",
+
+                  border: OutlineInputBorder(
+
+                    borderRadius: BorderRadius.circular(12),
+
+                  ),
+
+                ),
+
+                validator: (value){
+
+                  if(value == null || value.trim().isEmpty){
+
+                    return "please enter employee name";
+
+                  }
+
+                  return null;
+
+                }
+
+              ),
+
+              const SizedBox(height: 20),
+
+              InkWell(
+
+                onTap: selectFollowUpDate,
+
+                child: InputDecorator(
+
+                  decoration: InputDecoration(
+
+                    labelText: "FOLLOW-UP-DATE",
+
+                    suffixIcon: const Icon(Icons.keyboard_arrow_down),
+
+                    border: OutlineInputBorder(
+
+                      borderRadius: BorderRadius.circular(12),
+
+                    ),
+
+                  ),
+
+                  child: Text(
+
+                    followUpDate == null ? ""
+                                         :"${followUpDate!.day}/${followUpDate!.month}/${followUpDate!.year}",
+
+                  ),
+
+                ),
+
+              ),
+
+              const SizedBox(height: 20),
+
+              DropdownButtonFormField<String>(
+
+                initialValue: selectedStatus,
+
+                decoration: InputDecoration(
+
+                  labelText: "STATUS",
+
+                  border: OutlineInputBorder(
+
+                    borderRadius: BorderRadius.circular(12),
+
+                  ),
+
+                ),
+
+                items: const[
+
+               DropdownMenuItem(
+
+                 value: "Scheduled",
+                 child: Text("Scheduled"),
 
                ),
 
-             ),
+              DropdownMenuItem(
 
-             onTap: selectDate,
+                value: "Completed",
+                child: Text("Completed"),
 
-               ),
+              ),
 
-             ),
+              DropdownMenuItem(
 
-           const SizedBox(width:12),
+                value:"Cancelled",
+                child: Text("Cancelled"),
 
-           Expanded(
+              ),
 
-             child: TextFormField(
+                ],
 
-               readOnly: true,
+                validator: (value){
 
-             controller: TextEditingController(
+                  if(value == null || value.trim().isEmpty){
 
-             text: selectedTime == null ? ""
-                                        :selectedTime!.format(context),
-             ),
+                    return "please select status";
 
-             decoration: InputDecoration(
+                  }
 
-               labelText: "TIME",
-               suffixIcon: const Icon(Icons.keyboard_arrow_down),
-               border: OutlineInputBorder(
+                  return null;
 
-                 borderRadius: BorderRadius.circular(12),
+                },
 
-               ),
+                onChanged:(value){
 
-             ),
+                  setState((){
 
-             onTap: selectTime,
+                    selectedStatus = value;
 
-             ),
+                  });
 
-           ),
+                }
 
-           ],
+              ),
 
-         ),
+              const SizedBox(height: 30),
 
-         const SizedBox(height: 20),
+              SizedBox(
 
-         DropdownButtonFormField<String>(
+                width: double.infinity,
+                height: 55,
 
-           initialValue : selectedPurpose,
+                child: ElevatedButton(
 
-           decoration: InputDecoration(
+                  onPressed:(){
 
-             labelText: "PURPOSE",
-             border: OutlineInputBorder(
+                    if(_formkey.currentState!.validate()){
 
-               borderRadius: BorderRadius.circular(12),
+                      if(selectedDate == null){
 
-             ),
+                        ScaffoldMessenger.of(context).showSnackBar(
 
-           ),
+                          const SnackBar(
 
-          items: const[
+                            content: Text( "please select visit date"),
 
-            DropdownMenuItem(
+                          ),
 
-              value: "Product Demo",
-              child: Text("Product Demo"),
+                        );
+
+                        return;
+
+                      }
+
+                      if(selectedTime == null){
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+
+                          SnackBar(
+
+                            content: Text(
+
+                              "please select visit date"
+
+                            ),
+
+                          ),
+
+                        );
+
+                        return;
+
+                      }
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+
+                        SnackBar(
+
+                          content: Text("Visit saved successfully"),
+
+                        ),
+
+                      );
+
+                    }
+
+                  },
+
+                  style: ElevatedButton.styleFrom(
+
+                    backgroundColor: Colors.deepPurple,
+                    foregroundColor: Colors.white,
+
+                    shape: RoundedRectangleBorder(
+
+                      borderRadius: BorderRadius.circular(14),
+
+                    ),
+
+                  ),
+
+                  child: const Text(
+
+                    "Save Visit",
+                    style: TextStyle(
+
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+
+                    ),
+                  ),
+
+                ),
+
+              ),
+
+              const SizedBox(height: 20),
+
+            ] ,
 
             ),
 
-            DropdownMenuItem(
-
-              value: "Bussiness Meeting",
-              child: Text("Bussiness Meeting"),
-            ),
-
-            DropdownMenuItem(
-
-              value: "Follow up",
-              child: Text("Follow up"),
-            ),
-
-            DropdownMenuItem(
-
-              value: "Quotation Discussion",
-              child: Text("Quotation Discussion"),
-
-            ),
-
-          ],
-
-           onChanged: (value){
-
-             setState((){
-
-               selectedPurpose = value;
-
-             });
-
-           }
-
-         ),
-
-        const SizedBox(height:20),
-
-        TextFormField(
-
-          controller: notesController,
-
-          maxLines: 4,
-
-          decoration: InputDecoration(
-
-           labelText: "NOTES",
-           hintText: "discussed pricing and delivery timelines...",
-
-           border: OutlineInputBorder(
-
-            borderRadius: BorderRadius.circular(12),
-
-           ),
 
           ),
 
-        ),
-
-        const SizedBox(height:20),
-
-        TextFormField(
-
-          controller: employeeController,
-
-        decoration: InputDecoration(
-
-          labelText: "ASSIGNED EMPLOYEE",
-          hintText: "Enter employee name",
-
-          border: OutlineInputBorder(
-
-           borderRadius: BorderRadius.circular(12),
-
-          ),
 
         ),
 
-          validator: (value){
-
-            if(value == null || value.trim().isEmpty){
-
-              return "Please enter employee name";
-
-            }
-
-            return null;
-
-          }
         ),
-
-         const SizedBox(height:20),
-
-         InkWell(
-
-           onTap: selectFollowUpDate,
-
-           child: InputDecorator(
-
-             decoration: InputDecoration(
-
-               labelText: "FOLLOW-UP-DATE",
-
-               suffixIcon: const Icon(Icons.keyboard_arrow_down,),
-
-
-
-             ),
-
-           ),
-
-         ),
-
-          ],
-
-          ),
-
-          ),
-
-        ),
-
-      ),
 
     );
 
