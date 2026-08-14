@@ -49,6 +49,7 @@ app.post("/api/auth/register", async (req,res) => {
 try{
 
 const name = req.body.name;
+const employee_id = req.body.name;
 const company_name = req.body.company_name;
 const number = req.body.number;
 const email = req.body.email;
@@ -153,8 +154,8 @@ const hashedPassword = await bcrypt.hash(password,10);
 
 const result = await pool.query(
 
-"INSERT INTO users(name , company_name , number , email , password)VALUES($1, $2, $3, $4, $5) RETURNING id, name , company_name , number, email, password",
-[name , company_name , number , email , hashedPassword]
+"INSERT INTO users(name , employee_id , company_name , number , email , password )VALUES($1, $2, $3, $4, $5, $6) RETURNING id, name , company_name , number, email, employee_id",
+[ename , employee_id , company_name , number , email , hashedPassword ]
 
 );
 

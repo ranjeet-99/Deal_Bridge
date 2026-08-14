@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:http/http.dart';
 
 class EmployeeSignupScreen extends StatefulWidget{
 
@@ -381,9 +382,11 @@ bool isconfirmpasswordvisible = false;
 
                 child: ElevatedButton(
 
-                  onPressed:(){
+                  onPressed:() async {
 
                     if(_formkey.currentState!.validate()){
+
+                      final url = Uri.parse("http://10.0.2.2:3000/api/auth/registers");
 
                       print("Full Name : ${fullnameController.text}");
                       print("Email Address : ${emailController.text}");
