@@ -46,6 +46,8 @@ res.send("DealBridge Backend is working!");
 
 app.post("/api/auth/register", async (req,res) => {
 
+console.log("registration Request received");
+
 try{
 
 const name = req.body.name;
@@ -155,7 +157,7 @@ const hashedPassword = await bcrypt.hash(password,10);
 const result = await pool.query(
 
 "INSERT INTO users(name , employee_id , company_name , number , email , password )VALUES($1, $2, $3, $4, $5, $6) RETURNING id, name , company_name , number, email, employee_id",
-[ename , employee_id , company_name , number , email , hashedPassword ]
+[name , employee_id , company_name , number , email , hashedPassword ]
 
 );
 

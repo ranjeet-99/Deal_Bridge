@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:http/http.dart';
+import "dart:convert";
+
+import 'package:http/http.dart' as http;
 
 class EmployeeSignupScreen extends StatefulWidget{
 
@@ -17,6 +19,7 @@ final _formkey = GlobalKey<FormState>();
 
 final TextEditingController fullnameController = TextEditingController();
 final TextEditingController employeeidController = TextEditingController();
+final TextEditingController companyNameController = TextEditingController();
 final TextEditingController emailController = TextEditingController();
 final TextEditingController mobilenumberController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
@@ -24,6 +27,7 @@ final TextEditingController confirmpasswordController = TextEditingController();
 
 bool ispasswordvisible = false;
 bool isconfirmpasswordvisible = false;
+bool isregistering = false;
 
   @override
 
@@ -163,6 +167,28 @@ bool isconfirmpasswordvisible = false;
 
               TextFormField(
 
+                controller: companyNameController,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+
+                decoration: InputDecoration(
+
+                  labelText: "Company",
+                  hintText:"enter Company name ",
+                  prefixIcon: const Icon(Icons.factory_outlined),
+
+                  border: OutlineInputBorder(
+
+                    borderRadius: BorderRadius.circular(12),
+
+                  ),
+
+                ),
+
+              ),
+
+              TextFormField(
+
                 controller: emailController,
                 keyboardType:  TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
@@ -236,7 +262,7 @@ bool isconfirmpasswordvisible = false;
 
                   if(value.length !=  10){
 
-                    return "mobie number must be 10 digits";
+                    return "mobile number must be 10 digits";
 
                   }
 
@@ -382,16 +408,94 @@ bool isconfirmpasswordvisible = false;
 
                 child: ElevatedButton(
 
-                  onPressed:() async {
+                  onPressed: isregistering ? null : () async {
 
                     if(_formkey.currentState!.validate()){
 
-                      final url = Uri.parse("http://10.0.2.2:3000/api/auth/registers");
+                      setState((){
 
-                      print("Full Name : ${fullnameController.text}");
-                      print("Email Address : ${emailController.text}");
-                      print("Phone Number : ${mobilenumberController.text}");
-                      print("Password : ${passwordController.text}");
+                        isregistering = true;
+
+                      });
+
+                      final url = Uri.parse("http://192.168.2.220:3000/api/auth/register",);
+
+                      print("BEFORE API REQUEST");
+
+                      final response = await http.post(
+
+                         url,
+
+                      headers:{
+
+                        "Content-Type":"application/json" ,
+
+                      },
+
+                      body: jsonEncode({
+
+                     "name": fullnameController.text.trim(),
+                      "employee_id": employeeidController.text.trim(),
+                      "company_name": companyNameController.text.trim(),
+                      "number": mobilenumberController.text.trim(),
+                      "email": emailController.text.trim(),
+                      "password": passwordController.text.trim(),
+                      "confirm_password": confirmpasswordController.text.trim(),
+
+                      }),
+
+                      );
+
+                      if(response.statusCode == 201){
+
+                        print("registration Successful");
+
+                        if (!mounted) return;
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+
+                          const SnackBar(
+
+                            content: Text("Registration Successful"),
+
+                          ),
+
+                        );
+
+                        await Future.delayed(const Duration (milliseconds: 500));
+
+                        if(!mounted) return;
+
+                        Navigator.pop(context);
+
+                      }
+                      else{
+
+                       final data = jsonDecode(response.body);
+
+                       if (!mounted) return;
+
+                       ScaffoldMessenger.of(context).showSnackBar(
+
+                          SnackBar(
+
+                           content: Text(data["message"] ?? "Registration Failed"),
+
+                         ),
+
+                       );
+
+                      }
+
+                      if(mounted){
+
+                        setState((){
+
+                          isregistering = false;
+
+                        });
+
+                      }
 
                     }
 
@@ -408,11 +512,16 @@ bool isconfirmpasswordvisible = false;
 
                    );
 
-                    Navigator.pop(context);
+
+                 //   Navigator.pop(context);
 
                   },
 
-                  child: const Text(
+                 child: isregistering ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ) : const Text(
 
                     "Create Account",
                     style: TextStyle(

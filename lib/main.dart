@@ -2,6 +2,7 @@
 import 'package:deal_bridge/Screens/client_registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'Screens/dashboard/dashboard_screen.dart';
+import 'Screens/employee_signup_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
 import '/Screens/dashboard/Bottom_navigation_screens/main_screen.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
 
       title: "DealBridge",
-      home: VisitScreen(),
+      home: EmployeeSignupScreen(),
 
     );
 
