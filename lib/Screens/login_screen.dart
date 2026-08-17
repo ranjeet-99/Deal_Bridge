@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'employee_signup_screen.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget{
 
@@ -317,13 +319,54 @@ class _LoginScreenState extends State<LoginScreen>{
 
                     if(_formkey.currentState!.validate()){
 
-                      setState((){
+                      setState(() {
+                        isLoading = true;
 
-                     isLoading = true;
+                      });
 
-                    });
+                     final url = Uri.parse(
 
-                      // TODO: Laravel API call
+                       "http://192.168.2.220:3000/api/auth/login",
+
+                     );
+
+                     final response = await http.post(
+
+                       url,
+
+                       headers: {
+
+                         "Content-Type" : "application/json",
+
+                       },
+
+                       body: jsonEncode({
+
+                         "email": emailController.text.trim(),
+                         "password":passwordController.text.trim(),
+
+                       }),
+
+                     );
+
+                     if(response.statusCode == 200){
+
+                       final data = jsonDecode(response.body);
+
+                       if(!mounted) return ;
+
+                       ScaffoldMessenger.of(context).showSnackBar(
+
+                         SnackBar(
+
+                           content: Text(data["message"] ?? "Login Successful"),
+                         ),
+
+                       );
+
+                     }
+
+                      // TODO: Node.JS API call
 
                       await Future.delayed(
 

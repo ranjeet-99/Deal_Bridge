@@ -466,7 +466,7 @@ bool isregistering = false;
 
                         if(!mounted) return;
 
-                        Navigator.pop(context);
+                     //   Navigator.pop(context);
 
                       }
                       else{
@@ -513,7 +513,7 @@ bool isregistering = false;
                    );
 
 
-                 //   Navigator.pop(context);
+                   Navigator.pop(context);
 
                   },
 

@@ -44,6 +44,8 @@ res.send("DealBridge Backend is working!");
 
 });
 
+// REGISTRATION API
+
 app.post("/api/auth/register", async (req,res) => {
 
 console.log("registration Request received");
@@ -51,7 +53,7 @@ console.log("registration Request received");
 try{
 
 const name = req.body.name;
-const employee_id = req.body.name;
+const employee_id = req.body.employee_id;
 const company_name = req.body.company_name;
 const number = req.body.number;
 const email = req.body.email;
@@ -157,13 +159,9 @@ const hashedPassword = await bcrypt.hash(password,10);
 const result = await pool.query(
 
 "INSERT INTO users(name , employee_id , company_name , number , email , password )VALUES($1, $2, $3, $4, $5, $6) RETURNING id, name , company_name , number, email, employee_id",
-[name , employee_id , company_name , number , email , hashedPassword ]
+[ name , employee_id , company_name , number , email , hashedPassword ]
 
 );
-
-console.log(name); 
-console.log(email);
-console.log(hashedPassword);
 
 res.status(201).json({
 
@@ -179,6 +177,77 @@ user: result.rows[0]
   res.status(500).send("something went wrong.");
 
 }
+
+});
+
+// LOGIN API 
+
+app.post("/api/auth/login" , async (req , res ) => {
+
+   const email = req.body.email;
+   const password = req.body.password;
+
+   if(!email || !password ){
+
+    return res.status(400).json({
+
+       success: false,
+       message: "Email and password are required"
+
+    });
+
+   }
+
+   const result = await pool.query(
+
+    "SELECT id , name, employee_id , company_name, number, email , password FROM users WHERE email = $1",
+    [email]
+
+   );
+
+   if(result.rows.length === 0){
+
+    return res.status(401).json({
+
+      success: false,
+      message: "Invalid Email or Password",
+
+    });
+
+   }
+
+   const user = result.rows[0];
+
+   const matchedPassword = await bcrypt.compare(password , user.password);
+
+   if(!matchedPassword){
+
+    return res.status(401).json({
+ 
+      success: false,
+      message: "Invalid Email or Password"
+
+    });
+
+   }
+
+   return res.status(200).json({
+
+     success: true,
+     message: "Login Successful",
+
+     user:{
+
+     id: user.id,
+     name: user.name,
+     employee_id: user.employee_id,
+     company_name: user.company_name,
+     number: user.number,
+     email: user.email
+
+     }
+
+   });
 
 });
 
