@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import "dart:convert";
-
 import 'package:http/http.dart' as http;
+import 'package:deal_bridge/Screens/dashboard/Bottom_navigation_screens/main_screen.dart';
 
 class EmployeeSignupScreen extends StatefulWidget{
 
@@ -448,6 +448,8 @@ bool isregistering = false;
 
                       if(response.statusCode == 201){
 
+                        final data = jsonDecode(response.body);
+
                         print("registration Successful");
 
                         if (!mounted) return;
@@ -466,7 +468,16 @@ bool isregistering = false;
 
                         if(!mounted) return;
 
-                     //   Navigator.pop(context);
+                        Navigator.pushReplacement(
+
+                          context,
+                          MaterialPageRoute(
+
+                            builder: (context) => MainScreen(user: data["user"]),
+
+                          ),
+
+                        );
 
                       }
                       else{
@@ -511,9 +522,6 @@ bool isregistering = false;
                      ),
 
                    );
-
-
-                   Navigator.pop(context);
 
                   },
 

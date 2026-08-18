@@ -6,7 +6,9 @@ import '/Screens/dashboard/dashboard_screen.dart';
 
 class MainScreen extends StatefulWidget{
 
-  const MainScreen ({super.key});
+  final Map<String, dynamic>user;
+
+   const MainScreen ({super.key, required this.user});
 
   @override
 
@@ -20,7 +22,7 @@ class _MainScreen extends State<MainScreen>{
 
   final List<Widget> screens = [
 
-        const EmployeeDashboardScreen(),
+        EmployeeDashboardScreen(user: widget.user,),
         const ClientsScreen(),
         const ReportsScreen(),
         const AlertsScreen(),

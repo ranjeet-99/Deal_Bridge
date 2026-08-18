@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
 
       title: "DealBridge",
-      home: EmployeeSignupScreen(),
+      home: SplashScreen(),
 
     );
 

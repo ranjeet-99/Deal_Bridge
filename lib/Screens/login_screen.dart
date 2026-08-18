@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'employee_signup_screen.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:deal_bridge/Screens/dashboard/Bottom_navigation_screens/main_screen.dart';
 
 class LoginScreen extends StatefulWidget{
 
@@ -364,31 +365,54 @@ class _LoginScreenState extends State<LoginScreen>{
 
                        );
 
+                       await Future.delayed(
+
+                         const Duration(milliseconds:500),
+
+                       );
+
+                       if(!mounted) return;
+
+                       Navigator.pushReplacement(
+
+                         context,
+                         MaterialPageRoute(
+
+                           builder: (context) =>  MainScreen(user: data["user"]),
+
+                         ),
+
+                       );
+
                      }
 
-                      // TODO: Node.JS API call
+                     else{
 
-                      await Future.delayed(
+                       final data = jsonDecode(response.body);
 
-                        const Duration(seconds: 2),
+                       if(!mounted) return;
 
-                      );
+                       ScaffoldMessenger.of(context).showSnackBar(
 
-                      setState((){
+                         SnackBar(
 
-                        isLoading = false;
+                           content: Text(data["message"] ?? "Login Failed"),
 
-                      });
+                         ),
 
-                      ScaffoldMessenger.of(context).showSnackBar(
+                       );
 
-                        const SnackBar(
+                     }
 
-                          content: Text("Login Succesful"),
+                     if(mounted){
 
-                        ),
+                       setState((){
 
-                      );
+                         isLoading = false;
+
+                       });
+
+                     }
 
                    }
 
