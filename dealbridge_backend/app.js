@@ -251,6 +251,87 @@ app.post("/api/auth/login" , async (req , res ) => {
 
 });
 
+// RECENT ACTIVITIES API
+
+app.post("/api/activities", async (req, res) => {
+
+try{
+ 
+const {
+
+  user_id,
+  type,
+  title,
+  description,
+} = req.body;
+
+const result = await pool.query(
+
+'INSERT INTO activities (user_id, type, title, description) VALUES($1, $2, $3, $4) RETURNING *',[user_id, type, title, description] 
+
+);
+
+res.status(201).json({
+
+success: true,
+message: "Activity Created Successfully",
+activity: result.rows[0]
+
+});
+
+} catch(error){
+
+console.error("Activity Error :",error);
+
+res.status(500).json({
+
+  success: false,
+  message: "Failed to create Activity"
+
+});
+
+}
+
+
+});
+
+// FETCH RECENT ACTIVITIES FROM THE DATABASE AND DISPLAY
+
+app.get("/api/activities/:user_id", async (req, res) =>{
+
+try{
+
+const {user_id} = req.params;
+
+const result = await pool.query(
+
+'SELECT activities.id, activities.type, activities.title, activities.description, activities.create_at, users.name, users.employee_id FROM activities JOIN users ON activities.user_id = users.id WHERE activities.user_id = $1 ORDER BY activities.create_at DESC',
+
+[user_id]
+
+);
+
+res.status(200).json({
+
+ success:true,
+ activities: result.rows
+
+});
+
+} catch(error){
+
+console.log("Fetch activity error:",error);
+
+res.status(500).json({
+
+success: false,
+message:"Failed to Fetch Activities"
+
+});
+
+}
+
+});
 
 app.listen(3000, () => {
 

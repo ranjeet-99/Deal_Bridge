@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class EmployeeDashboardScreen extends StatefulWidget{
 
-  const EmployeeDashboardScreen({super.key});
+  final Map<String , dynamic > user;
+
+  const EmployeeDashboardScreen({super.key, required this.user});
 
   @override
 
@@ -11,6 +15,44 @@ class EmployeeDashboardScreen extends StatefulWidget{
 }
 
 class _EmployeeDeshboardScreenState extends State<EmployeeDashboardScreen>{
+
+  List<dynamic> activities = [];
+
+  Future<void> fetchActivities() async{
+
+    final url = Uri.parse(
+
+      "http://192.168.2.220:3000/api/activities/{user_id}",
+
+    );
+
+    final response = await http.get(url);
+
+    if(response.statusCode == 200){
+
+      final data = jsonDecode(response.body);
+
+      if(!mounted) return;
+
+      setState((){
+
+        activities = data["activities"];
+
+      });
+
+    }
+
+  }
+
+  @override
+
+  void initState(){
+
+    super.initState();
+
+    fetchActivities();
+
+  }
 
   @override
 
@@ -149,9 +191,9 @@ class _EmployeeDeshboardScreenState extends State<EmployeeDashboardScreen>{
 
             const SizedBox(height: 5),
 
-            const Text(
+             Text(
 
-              "Ranjeet",
+              "${widget.user['name']}",
               style: TextStyle(
 
                 fontSize: 28,

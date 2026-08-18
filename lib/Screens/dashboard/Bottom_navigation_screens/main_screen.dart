@@ -20,18 +20,18 @@ class _MainScreen extends State<MainScreen>{
 
   int currentIndex = 0;
 
-  final List<Widget> screens = [
-
-        EmployeeDashboardScreen(user: widget.user,),
-        const ClientsScreen(),
-        const ReportsScreen(),
-        const AlertsScreen(),
-
-  ];
-
   @override
 
   Widget build(BuildContext context){
+
+    final List<Widget> screens = [
+
+      EmployeeDashboardScreen(user: widget.user,),
+      const ClientsScreen(),
+      const ReportsScreen(),
+      const AlertsScreen(),
+
+    ];
 
     return Scaffold(
 

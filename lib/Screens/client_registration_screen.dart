@@ -263,7 +263,7 @@ Widget build(BuildContext context){
 
        }
 
-       if(!RegExp(r'^[0-9]{10}$)').hasMatch(value.trim())){
+       if(!RegExp(r'^[0-9]{10}$').hasMatch(value.trim())){
 
          return "Enter a valid 10-digit mobile number";
 
